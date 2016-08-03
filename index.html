@@ -1,27 +1,50 @@
 <!DOCTYPE html>
   <meta charset="utf-8">
-  <style>
+  <head>
+    <style>
+    body {
+      height: 99vh;
+      width: 100vw;
+      margin: 0 0;
+      padding: 0 0;
+      display:flex;
+      flex-direction: row-reverse;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    #map {
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    #wind {
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
 
-  /* CSS goes here. */
-  body {
-    height: 99vh;
-    margin: 0 0;
-    padding: 0 0;
-  }
-  #map {
-    width: width;
-    height: 100%;
-  }
-  </style>
+    .map-container {
+      height: 100%;
+    }
+    .content-container {
+      margin-right: 2em;
+    }
+    </style>
+
+  </head>
   <body>
-
-    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <script src="//d3js.org/topojson.v1.min.js"></script>
+    <div class="content-container">
+    </div>
+    <div class="map-container">
+      <svg id="map"/>
+      <canvas id="wind"/>
+    </div>
+    <script src="//d3js.org/d3.v4.min.js" charset="utf-8"></script>
     <script src="map.js"></script>
-    <svg id="map"/>
     <script>
       createMap("#map");
     </script>
-
   <body>
 </html>

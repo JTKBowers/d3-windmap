@@ -28,25 +28,27 @@ function getHeight() {
 
 function createMap(selector){
   var width = 960;
+  var nominalHeight = 1160;
+
+  var height = getHeight();//svg.node().getBBox()["height"];
+  if (height < nominalHeight)
+    width *= height/nominalHeight;
 
   var svg = d3.select(selector)
       .attr("width", width);
-
-  var height = getHeight();//svg.node().getBBox()["height"];
-
 
   d3.json("data/chch-coastline.geojson", function(error, coastline) {
     if (error) return console.error(error);
     // console.log(coastline);
 
-    var center = d3.geo.centroid(coastline)
+    var center = d3.geoCentroid(coastline)
     var scale  = 150;
     var offset = [width/2, height/2];
-    var projection = d3.geo.mercator().scale(scale).center(center)
+    var projection = d3.geoMercator().scale(scale).center(center)
         .translate(offset);
 
     // create the path
-    var path = d3.geo.path().projection(projection);
+    var path = d3.geoPath().projection(projection);
 
     // using the path determine the bounds of the current map and use
     // these to determine better values for the scale and translation
@@ -59,7 +61,7 @@ function createMap(selector){
                       height - (bounds[0][1] + bounds[1][1])/2];
 
     // new projection
-    projection = d3.geo.mercator().center(center)
+    projection = d3.geoMercator().center(center)
       .scale(scale).translate(offset);
     path = path.projection(projection);
 
