@@ -47,6 +47,28 @@ function createMap(selector){
       .style("stroke", "black")
       .style('fill', 'none');
 
+    stations = [
+      [171.748567, -43.908381],
+      [172.591819, -43.530427,],
+      [172.627465, -43.505181],
+      [172.679046, -43.547375],
+      [171.243735, -44.091185],
+      [172.656958, -43.383032],
+      [172.484249, -43.640087],
+      [172.595725, -43.303356],
+      [171.248786, -44.404181],
+      [171.245892, -44.396785],
+      [171.238404, -44.352443],
+      [171.0481, -44.7326]
+    ];
+    stations.map(function(x) {console.log(projection(x))})
+    svg.selectAll("circle")
+      .data(stations).enter()
+      .append("circle")
+      .attr("cx", function (d) { return projection(d)[0]; })
+      .attr("cy", function (d) { return projection(d)[1]; })
+      .attr("r", "4px")
+      .attr("fill", "red")
     return projection;
   });
 }
