@@ -17,8 +17,7 @@ function IDW(point, locations, values, dist_fn){
   }
 
   // Calculate the weights for each point.
-  var pow = 1.0;
-  var weights = distances.map(function(d) {return 1.0/Math.pow(d, pow);})
+  var weights = distances.map(function(d) {return 1.0/d;})
   var sum_weights = weights.reduce(function(a, b) { return a + b; }, 0);
 
   var u = new Vector(zeroedArray(2));
