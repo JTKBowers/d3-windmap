@@ -61,3 +61,11 @@ function getHeight() {
   }
   return viewportheight;
 }
+
+function zeroedArray(len) {
+    var rv = new Array(len);
+    while (--len >= 0) {
+        rv[len] = 0;
+    }
+    return rv;
+}
