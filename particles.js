@@ -54,6 +54,9 @@ class ParticleSystem {
         this.particles[i] = this.createParticle();
       this.particles[i].age ++;
 
+      this.particles[i].prev_x = this.particles[i].x;
+      this.particles[i].prev_y = this.particles[i].y;
+
       this.particles[i] = this.updateParticle(this.particles[i]);
     }
   }
