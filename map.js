@@ -27,7 +27,7 @@ function getHeight() {
 }
 
 function createMap(selector){
-  var width = 960;
+  var width = 1500;
   var nominalHeight = 1160;
 
   var height = getHeight();//svg.node().getBBox()["height"];
@@ -64,6 +64,7 @@ function createMap(selector){
     projection = d3.geoMercator().center(center)
       .scale(scale).translate(offset);
     path = path.projection(projection);
+
 
     svg.selectAll("path").data(coastline.features)
       .enter().append("path")

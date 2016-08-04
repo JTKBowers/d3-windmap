@@ -1,4 +1,4 @@
-var width = 960;
+var width = 1500;
 var nominalHeight = 1160;
 
 var height = getHeight();//svg.node().getBBox()["height"];
@@ -74,7 +74,7 @@ function updateParticles(){
     particles[i].prev_x = particles[i].x;
     particles[i].prev_y = particles[i].y;
 
-    particles[i].x += 1;
+    particles[i].x += .7;
     // particles[i].x += Math.random();
     // particles[i].y += Math.random()-0.5;
   }
