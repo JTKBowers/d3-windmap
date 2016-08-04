@@ -35,7 +35,7 @@ function createWind(canvasSelector, mapProj){
 
   function createWindParticle(){
     return {
-      x: Math.random() * width*0.8,
+      x: Math.random() * width,
       y: Math.random() * height,
       prev_x: undefined,
       prev_y: undefined,
@@ -50,11 +50,13 @@ function createWind(canvasSelector, mapProj){
 
   for (var station_id in wind_values) {
     if (wind_values.hasOwnProperty(station_id)) {
-      locations.push(station_locations[station_id][1].proj(mapProj));
+      var projected_location = station_locations[station_id][1].proj(mapProj);
+      projected_location.elements[1] = height - projected_location.elements[1]; //flip y coords to convert from svg space to canvas space.
+      locations.push(projected_location);
       values.push(wind_values[station_id]);
     }
   }
-  
+
   function updateParticle(particle){
     var pos = new Vector([particle.x, particle.y])
     vel = IDW(pos, locations, values, euclidian_dist);
