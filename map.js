@@ -1,31 +1,3 @@
-function getHeight() {
-  var viewportheight;
-
-  // the more standards compliant browsers (mozilla/netscape/opera/IE7) use window.innerWidth and window.innerHeight
-
-  if (typeof window.innerHeight != 'undefined')
-  {
-      viewportheight = window.innerHeight
-  }
-
-  // IE6 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
-
-  else if (typeof document.documentElement != 'undefined'
-     && typeof document.documentElement.clientHeight !=
-     'undefined' && document.documentElement.clientHeight != 0)
-  {
-       viewportheight = document.documentElement.clientHeight
-  }
-
-  // older versions of IE
-
-  else
-  {
-       viewportheight = document.getElementsByTagName('body')[0].clientHeight;
-  }
-  return viewportheight;
-}
-
 function createMap(selector){
   var width = 1500;
   var nominalHeight = 1160;
@@ -37,8 +9,8 @@ function createMap(selector){
   var svg = d3.select(selector)
       .attr("width", width);
 
-  d3.json("data/chch-coastline.geojson", function(error, coastline) {
-    if (error) return console.error(error);
+  // d3.json("data/chch-coastline.geojson", function(error, coastline) {
+  getJSON("data/chch-coastline.geojson").then(function(coastline) {
     // console.log(coastline);
 
     var center = d3.geoCentroid(coastline)
