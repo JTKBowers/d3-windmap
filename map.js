@@ -10,7 +10,9 @@ function createMap(selector){
       .attr("width", width);
 
   // d3.json("data/chch-coastline.geojson", function(error, coastline) {
-  getJSON("data/chch-coastline.geojson").then(function(coastline) {
+
+  // Return a promise to provide a map projection appropriate for the map -> screen transform.
+  return getJSON("data/chch-coastline.geojson").then(function(coastline) {
     // console.log(coastline);
 
     var center = d3.geoCentroid(coastline)
@@ -44,5 +46,7 @@ function createMap(selector){
       .style("stroke-width", "1")
       .style("stroke", "black")
       .style('fill', 'none');
+
+    return projection;
   });
 }

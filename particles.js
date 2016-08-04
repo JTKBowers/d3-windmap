@@ -1,87 +1,70 @@
-var width = 1500;
-var nominalHeight = 1160;
+class ParticleSystem {
+  constructor(selector, width, height) {
+    this.width=width;
+    this.height=height;
+    this.canvas =
+      d3.select(selector)
+          .attr('width', width)
+          .attr('height', height)
+          .node().getContext('2d');
+    this.particles = [];
 
-var height = getHeight();//svg.node().getBBox()["height"];
-if (height < nominalHeight)
-  width *= height/nominalHeight;
+    this.x_transform =
+      d3.scaleLinear()
+        .domain([0, width])
+        .range([0, width]);
 
-var canvas =
-  d3.select('canvas#wind')
-      .attr('width', width)
-      .attr('height', height)
-      .node().getContext('2d');
+    this.y_transform =
+      d3.scaleLinear()
+        .domain([0, height])
+        .range([height, 0]);
+  }
 
-function createParticle(){
-  return {
-    x: Math.random() * width*0.8,
-    y: Math.random() * height,
-    prev_x: undefined,
-    prev_y: undefined,
-    lifespan: Math.random() * 200,
-    age: 0
+  createParticles(num){
+    for(var i = 0; i < num; i++)
+      this.particles.push(this.createParticle())
+  }
+
+  drawParticles() {
+    this.canvas.fillStyle = "rgba(0, 0, 0, 0.94)";
+    var prev = this.canvas.globalCompositeOperation;
+    this.canvas.globalCompositeOperation = "destination-in";
+    this.canvas.fillRect(0, 0, this.width, this.height);
+    this.canvas.globalCompositeOperation = prev;
+
+    this.canvas.beginPath();
+    var i = -1, cx, cy;
+    while (++i < this.particles.length) {
+      var d = this.particles[i];
+      if (d.prev_x == undefined)
+        continue
+      this.canvas.beginPath();
+        var cx = this.x_transform( d.prev_x );
+        var cy = this.y_transform( d.prev_y );
+        this.canvas.moveTo(cx, cy);
+        var new_cx = this.x_transform( d.x );
+        var new_cy = this.y_transform( d.y );
+        this.canvas.lineTo(new_cx, new_cy);
+      this.canvas.stroke();
+    }
   };
-}
-var particles =
-  d3.range(2000).map(function(d, i) {
-    return createParticle();
-  });
+  updateParticles(){
+    for(var i=0; i < this.particles.length; i++){
+      if (this.particles[i].age > this.particles[i].lifespan)
+        this.particles[i] = this.createParticle();
+      this.particles[i].age ++;
 
-var x =
-  d3.scaleLinear()
-    .domain([0, width])
-    .range([0, width]);
-
-var y =
-  d3.scaleLinear()
-    .domain([0, height])
-    .range([height, 0]);
-
-
-/* PLOT */
-
-function drawParticles() {
-  canvas.fillStyle = "rgba(0, 0, 0, 0.97)";
-  var prev = canvas.globalCompositeOperation;
-  canvas.globalCompositeOperation = "destination-in";
-  canvas.fillRect(0, 0, width, height);
-  canvas.globalCompositeOperation = prev;
-  // canvas.clearRect(0, 0, width, height);
-  canvas.beginPath();
-  var i = -1, cx, cy;
-  while (++i < particles.length) {
-
-    d = particles[i];
-    if (d.prev_x == undefined)
-      continue
-    canvas.beginPath();
-      cx = x( d.prev_x );
-      cy = y( d.prev_y );
-      canvas.moveTo(cx, cy);
-      new_cx = x( d.x );
-      new_cy = y( d.y );
-      canvas.lineTo(new_cx, new_cy);
-    canvas.stroke();
-    // canvas.arc(cx, cy, d.r, 0, 2 * Math.PI);
+      this.particles[i] = this.updateParticle(this.particles[i]);
+    }
   }
-  canvas.fill();
-};
-function updateParticles(){
-  for(var i=0; i < particles.length; i++){
-    var particle = particles[i];
-    if (particle.age > particle.lifespan)
-      particles[i] = createParticle();
-    particles[i].age ++;
-    particles[i].prev_x = particles[i].x;
-    particles[i].prev_y = particles[i].y;
 
-    particles[i].x += .7;
-    // particles[i].x += Math.random();
-    // particles[i].y += Math.random()-0.5;
+
+  start() {
+    var self = this;
+    function step(){
+      self.updateParticles();
+      self.drawParticles();
+    }
+    this.timer = d3.timer(step);
   }
 }
-drawParticles();
-
-d3.timer(function() {
-  updateParticles();
-  drawParticles();
-});

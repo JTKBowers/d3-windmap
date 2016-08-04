@@ -45,8 +45,10 @@
     <script src="utils.js"></script>
     <script src="map.js"></script>
     <script src="particles.js"></script>
+    <script src="wind.js"></script>
     <script>
-      createMap("#map");
+      createMap("#map")
+        .then(function(mapProj) {createWind("canvas#wind", mapProj)});
     </script>
   <body>
 </html>
