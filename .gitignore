@@ -1,1 +1,3 @@
 data/lds-nz-coastlines-topo-150k-SHP.zip
+*.shp
+*.shx
